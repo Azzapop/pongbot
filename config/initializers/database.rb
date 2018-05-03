@@ -1,5 +1,6 @@
 require "yaml"
-settings = YAML::load_file("config/db.yml")
+template = ERB.new File.new("config/db.yml").read
+settings = YAML.load template.result(binding)
+
 # Sequel Configuration
-puts settings.inspect
 DB = Sequel.connect(settings[ENV['RACK_ENV']])

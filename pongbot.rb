@@ -6,12 +6,45 @@ class Pongbot < Sinatra::Base
   set :public_folder => "public", :static => true
 
   get "/" do
-    puts params
-    user = User.create(name: rand(7), slack_id: rand(7))
     erb :welcome
   end
 
   post "/record" do
-    logger.info params.inspect
+    # slack params
+    # {"token"=>"", "team_id"=>"", "team_domain"=>"", "channel_id"=>"", "channel_name"=>"general", "user_id"=>"U5PAL827N", "user_name"=>"aaron", "command"=>"/pongbot", "text"=>"test test", "response_url"=>"https://hooks.slack.com/commands/T5PBY04J1/358443814534/EeABz3I4xMp5YQ5NPYTU2D6X", "trigger_id"=>"357551349650.193406004613.4aa7b53bdeee78a106cd03828a8eaa78"}
+    # user type <@U5PAL827N|aaron>
+    query = params['text'].split(' ')
+    if query[0] != 'record'
+      return # fuck that shit
+    end
+    keys = [:slack_id, :name]
+    winner_params = Hash[keys.zip(query[1].tr('<>', '').split('|'))]
+    loser_params = Hash[keys.zip(query[2].tr('<>', '').split('|'))]
+
+    winner = User.first(slack_id: winner_params[:slack_id])
+    if winner
+      winner.update(name: winner_params[:name])
+    else
+      winner = User.create(winner_params)
+    end
+
+    loser = User.first(slack_id: loser_params[:slack_id])
+    if loser
+      loser.update(name: loser_params[:name])
+    else
+      loser = Loser.create(loser_params)
+    end
+
+
+    match = Match.record(winner: winner, loser: loser)
+
+    logger.info 'thats all there is, there isnt anymore'
+
+    # validate token
+    # find or create winner
+    # find or create loser
+    # create match
+    # record win/loss
+    # return status
   end
 end

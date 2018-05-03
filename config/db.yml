@@ -8,6 +8,6 @@ development:
   pool: 5
   timeout: 5000
   encoding: utf8
-production: <%= ENV['DATABASE_URL'] %>
+production: <%= ENV['CLEARDB_DATABASE_URL'] %>
 
 

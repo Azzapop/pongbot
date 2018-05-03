@@ -10,6 +10,6 @@ class Pongbot < Sinatra::Base
   end
 
   post "/record" do
-    puts params
+    logger.info params.inspect
   end
 end

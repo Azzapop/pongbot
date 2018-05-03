@@ -1,0 +1,13 @@
+# Sequel Database Configuration
+
+development:
+  adapter: mysql2
+  database: pongbot_development
+  username: root
+  password:
+  pool: 5
+  timeout: 5000
+  encoding: utf8
+production: <%= ENV['DATABASE_URL'] %>
+
+

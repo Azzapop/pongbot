@@ -16,6 +16,7 @@ class Pongbot < Sinatra::Base
     # {"token"=>"", "team_id"=>"", "team_domain"=>"", "channel_id"=>"", "channel_name"=>"general", "user_id"=>"U5PAL827N", "user_name"=>"aaron", "command"=>"/pongbot", "text"=>"test test", "response_url"=>"https://hooks.slack.com/commands/T5PBY04J1/358443814534/EeABz3I4xMp5YQ5NPYTU2D6X", "trigger_id"=>"357551349650.193406004613.4aa7b53bdeee78a106cd03828a8eaa78"}
     # user type <@U5PAL827N|aaron>
 
+    headers['Content-type'] ='application/json'
     query = params['text'].split(' ')
     if query[0] != 'record'
       return {

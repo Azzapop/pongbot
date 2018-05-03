@@ -1,3 +1,5 @@
+require 'json'
+
 class Pongbot < Sinatra::Base
   configure :production, :development do
     enable :logging

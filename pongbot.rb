@@ -52,7 +52,7 @@ class Pongbot < Sinatra::Base
             {
               fields: [
                 { title: '', value: i, short: true },
-                { title: '', value: "#{user.name} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
+                { title: '', value: "#{user.name || user.slack_id} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
               ]
             }
           end

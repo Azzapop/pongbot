@@ -19,9 +19,11 @@ class User < Sequel::Model(:users)
 
   def update_elo(opponent_elo: 1500, won: false)
     k = 32
+    # move to seperate function
     expected = 1/(1+10**((opponent_elo-elo)/400))
     new_elo = elo + (k*((won ? 1 : 0) - expected))
     self.elo = new_elo
+    save
   end
 
   dataset_module do

@@ -24,8 +24,8 @@ class Pongbot < Sinatra::Base
       attachments: []
     }
 
+    User.delete
     logger.info User.count
-    logger.info User.top_ten.inspect
     if params['token'] != ENV['SLACK_TOKEN']
       status 403
       return "Invalid Token"

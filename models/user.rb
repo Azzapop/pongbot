@@ -28,7 +28,7 @@ class User < Sequel::Model(:users)
 
   dataset_module do
     def top_ten
-      User.all.order(Sequel.desc(:elo)).first(10)
+      User.order(Sequel.desc(:elo)).first(10)
     end
 
     def find_or_create_by_slack_id(slack_id: nil)

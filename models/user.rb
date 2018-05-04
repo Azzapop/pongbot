@@ -33,6 +33,7 @@ class User < Sequel::Model(:users)
       user = User.first(slack_id: user_params[:slack_id])
       user = if user
         user.update(name: user_params[:name])
+        user
       else
         User.create(user_params)
       end

@@ -27,6 +27,10 @@ class User < Sequel::Model(:users)
   end
 
   dataset_module do
+    def top_ten
+      User.all.order(Sequel.desc(:elo)).first(10)
+    end
+
     def find_or_create_by_slack_id(slack_id: nil)
       return User.new.errors.add(:slack_id, 'Missing a slack id.') if slack_id.nil?
 

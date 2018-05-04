@@ -41,16 +41,19 @@ class Pongbot < Sinatra::Base
           response[:attachments] << {
             text: 'New Leaderboard',
             fields: [
-              { title: 'Name', short: true },
-              { fields: [
-                  { title: 'Wins', short: true },
-                  { title: 'Losses', short: true }
-                ],
-                short: true
-              }
+              { title: 'Position', short: true },
+              { title: 'Player (W/L)', short: true }
             ],
-            color: '#F35A00'
+            color: '#2b2626'
           }
+          response[:attachments] << User.top_ten.each_with_index.map do |user, i|
+            {
+              fields: [
+                { value: i, short: true },
+                { value: "#{user.name} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
+              ]
+            }
+          end
         else
           response[:text] = match.errors.join(', ')
         end

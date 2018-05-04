@@ -42,8 +42,12 @@ class Pongbot < Sinatra::Base
             text: 'New Leaderboard',
             fields: [
               { title: 'Name', short: true },
-              { title: 'Wins', short: true },
-              { title: 'Losses', short: true }
+              { fields: [
+                  { title: 'Wins', short: true },
+                  { title: 'Losses', short: true }
+                ],
+                short: true
+              }
             ],
             color: '#F35A00'
           }

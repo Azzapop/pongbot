@@ -40,7 +40,7 @@ class Pongbot < Sinatra::Base
         match = Match.record(winner: winner, loser: loser)
         unless match.errors.any?
           response[:text] = ':zap: :ping_pong:'
-          response[:attachments] << { text: "#{winner.name} has beaten #{loser.name}", color: "#00BD58" }
+          response[:attachments] << { text: "#{winner.screen_name} has beaten #{loser.screen_name}", color: "#00BD58" }
           response[:attachments] += Match.slack_leaderboard(heading: 'New Leaderboard')
         else
           response[:text] = match.errors.join(', ')
@@ -51,8 +51,8 @@ class Pongbot < Sinatra::Base
     when 'odds'
       player1 = User.find_or_create_by_slack_id(slack_id: query[1])
       player2 = User.find_or_create_by_slack_id(slack_id: query[2])
-      logger.info player1.inspect
-      logger.info player2.inspect
+      logger.info "PLAYER 1: " + player1.inspect
+      logger.info "PLAYER 2: " + player2.inspect
       player1_odds = player1.expected_odds(opponent_elo: player2.elo)
       player2_odds = player2.expected_odds(opponent_elo: player1.elo)
       response[:text] = "#{player1.screen_name} (#{player1_odds}) -- #{player2.screen_name} (#{player2_odds})"
@@ -97,12 +97,5 @@ class Pongbot < Sinatra::Base
     end
 
     return response.to_json
-
-    # validate token
-    # find or create winner
-    # find or create loser
-    # create match
-    # record win/loss
-    # return status
   end
 end

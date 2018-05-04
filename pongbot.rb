@@ -24,7 +24,7 @@ class Pongbot < Sinatra::Base
       attachments: []
     }
 
-    User.delete
+    User.delete_all
     logger.info User.count
     if params['token'] != ENV['SLACK_TOKEN']
       status 403

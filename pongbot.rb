@@ -31,8 +31,8 @@ class Pongbot < Sinatra::Base
 
     query = params['text'].split(' ')
     if query[0] == 'record'
-      winner = User.find_or_create_by_slack_id(query[1])
-      loser = User.find_or_create_by_slack_id(quer[2])
+      winner = User.find_or_create_by_slack_id(slack_id: query[1])
+      loser = User.find_or_create_by_slack_id(slack_id: query[2])
       unless winner.errors.any? || loser.errors.any?
         match = Match.record(winner: winner, loser: loser)
         unless match.errors.any?

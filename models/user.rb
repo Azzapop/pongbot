@@ -23,9 +23,9 @@ class User < Sequel::Model(:users)
 
   def expected_odds(opponent_elo: nil)
     return 0 if opponent_elo.nil?
-    qa = 10**(elo/400)
-    qb = 10**(opponent_elo/400)
-    return qa/(qa+qb)
+    qa = 10**(elo/400).to_f
+    qb = 10**(opponent_elo/400).to_f
+    return qa/(qa+qb).to_f
   end
 
   def update_elo(opponent_elo: 1500, won: false)

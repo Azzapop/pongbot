@@ -56,6 +56,7 @@ class Pongbot < Sinatra::Base
               ]
             }
           end
+          logger.info response[:attachments].inspect
         else
           response[:text] = match.errors.join(', ')
         end

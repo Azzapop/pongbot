@@ -48,7 +48,7 @@ class Pongbot < Sinatra::Base
             ],
             color: '#2b2626'
           }
-          response[:attachments] << User.top_ten.each_with_index.map do |user, i|
+          response[:attachments] += User.top_ten.each_with_index.map do |user, i|
             {
               fields: [
                 { title: '', value: i, short: true },

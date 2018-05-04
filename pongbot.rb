@@ -56,6 +56,24 @@ class Pongbot < Sinatra::Base
       player1_odds = player1.expected_odds(opponent_elo: player2.elo)
       player2_odds = player2.expected_odds(opponent_elo: player1.elo)
       response[:text] = "#{player1.screen_name} (#{player1_odds}) -- #{player2.screen_name} (#{player2_odds})"
+    when 'matches'
+      player = User.find_or_create_by_slack_id(slack_id: query[1])
+      response[:attachments] << {
+        text: 'Match List',
+        fields: [
+          { title: 'Winner', short: true },
+          { title: 'Loser', short: true }
+        ],
+        color: '#2b2626'
+      }
+      response[:attachments] += player.matches.map do |m|
+        {
+          fields: [
+            { value: m.winner.screen_name, short: true },
+            { value: m.loser.screen_name, short: true }
+          ]
+        }
+      end
     when 'leaderboard'
       response[:text] = ':ping_pong: Leaderboard :ping_pong:'
       response[:attachments] = Match.slack_leaderboard

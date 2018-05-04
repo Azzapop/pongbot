@@ -51,8 +51,8 @@ class Pongbot < Sinatra::Base
           response[:attachments] << User.top_ten.each_with_index.map do |user, i|
             {
               fields: [
-                { value: i, short: true },
-                { value: "#{user.name} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
+                { title: '', value: i, short: true },
+                { title: '', value: "#{user.name} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
               ]
             }
           end

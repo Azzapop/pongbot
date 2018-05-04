@@ -38,7 +38,7 @@ class Pongbot < Sinatra::Base
       unless winner.errors.any? || loser.errors.any?
         match = Match.record(winner: winner, loser: loser)
         unless match.errors.any?
-          response[:text] = winner.inspect + " -- " + loser.inspect
+          response[:text] = ':zap: :ping_pong:'
           response[:attachments] << { text: "#{winner.name} has beaten #{loser.name}", color: "#00BD58" }
           response[:attachments] << {
             text: 'New Leaderboard',

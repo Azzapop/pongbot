@@ -65,6 +65,7 @@ class Pongbot < Sinatra::Base
       logger.info "Logging Users"
       User.top_ten.each { |u| logger.info u.inspect }
       logger.info "======================="
+      response[:text] = 'Logging done.'
     end
 
     return response.to_json

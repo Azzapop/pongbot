@@ -32,9 +32,7 @@ class User < Sequel::Model(:users)
     k = 32
     # move to seperate function
     expected = expected_odds(opponent_elo: opponent_elo)
-    logger.info expected
     new_elo = elo + (k*((won ? 1 : 0) - expected))
-    logger.info new_elo
     self.elo = new_elo
     self.save
   end

@@ -57,6 +57,14 @@ class Pongbot < Sinatra::Base
     when 'leaderboard'
       response[:text] = ':ping_pong: Leaderboard :ping_pong:'
       response[:attachments] = Match.slack_leaderboard
+    when 'wipe'
+      User.all.each { |u| u.delete }
+      response[:text] = 'Deleted all users.'
+    when 'log'
+      logger.info "======================="
+      logger.info "Logging Users"
+      User.top_ten.each { |u| logger.info u.inspect }
+      logger.info "======================="
     end
 
     return response.to_json

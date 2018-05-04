@@ -18,5 +18,25 @@ class Match < Sequel::Model(:matches)
       end
       return match
     end
+
+    def slack_leaderboard
+      board = [{
+        text: 'New Leaderboard',
+        fields: [
+          { title: 'Position', short: true },
+          { title: 'Player (W/L)', short: true }
+        ],
+        color: '#2b2626'
+      }]
+      board += User.top_ten.each_with_index.map do |user, i|
+        {
+          fields: [
+            { title: '', value: i+1, short: true },
+            { title: '', value: "#{user.name || user.slack_id} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
+          ]
+        }
+      end
+      return board
+    end
   end
 end

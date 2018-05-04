@@ -34,28 +34,14 @@ class Pongbot < Sinatra::Base
     when 'record'
       winner = User.find_or_create_by_slack_id(slack_id: query[1])
       loser = User.find_or_create_by_slack_id(slack_id: query[2])
+      logger.info "WINNER: " + winner.inspect
+      logger.info "LOSER: " + loser.inspect
       unless winner.errors.any? || loser.errors.any?
         match = Match.record(winner: winner, loser: loser)
         unless match.errors.any?
           response[:text] = ':zap: :ping_pong:'
           response[:attachments] << { text: "#{winner.name} has beaten #{loser.name}", color: "#00BD58" }
-          response[:attachments] << {
-            text: 'New Leaderboard',
-            fields: [
-              { title: 'Position', short: true },
-              { title: 'Player (W/L)', short: true }
-            ],
-            color: '#2b2626'
-          }
-          response[:attachments] += User.top_ten.each_with_index.map do |user, i|
-            {
-              fields: [
-                { title: '', value: i+1, short: true },
-                { title: '', value: "#{user.name || user.slack_id} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
-              ]
-            }
-          end
-          logger.info response[:attachments].inspect
+          response[:attachments] += Match.slack_leaderboard
         else
           response[:text] = match.errors.join(', ')
         end
@@ -68,6 +54,9 @@ class Pongbot < Sinatra::Base
       player1_odds = player1.expected_odds(opponent_elo: player2.elo)
       player2_odds = player2.expected_odds(opponent_elo: player1.elo)
       response[:text] = "#{player1.screen_name} (#{player1_odds}) -- #{player2.screen_name} (#{player2_odds})"
+    when 'leaderboard'
+      response[:text] = ':ping_pong: Leaderboard :ping_pong'
+      response[:attachments] = Match.slack_leaderboard
     end
 
     return response.to_json

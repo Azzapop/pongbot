@@ -12,8 +12,9 @@ class Match < Sequel::Model(:matches)
     def record(winner: nil, loser: nil)
       match = Match.create(winner: winner, loser: loser)
       unless match.errors.any?
-        winner.update_elo(opponent_elo: loser.elo, won: true)
-        loser.update_elo(opponent_elo: winner.elo, won: false)
+        winner_elo, loser_elo = winner.elo, loser.elo
+        winner.update_elo(opponent_elo: loser_elo, won: true)
+        loser.update_elo(opponent_elo: winner_elo, won: false)
       end
       return match
     end

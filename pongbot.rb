@@ -58,6 +58,7 @@ class Pongbot < Sinatra::Base
       response[:text] = "#{player1.screen_name} (#{player1_odds}) -- #{player2.screen_name} (#{player2_odds})"
     when 'matches'
       player = User.find_or_create_by_slack_id(slack_id: query[1])
+      response[:text] = 'Your results are below.'
       response[:attachments] << {
         text: 'Match List',
         fields: [
@@ -86,6 +87,13 @@ class Pongbot < Sinatra::Base
       User.top_ten.each { |u| logger.info u.inspect }
       logger.info "======================="
       response[:text] = 'Logging done.'
+    when 'help'
+      response[:text] = 'Please find a list of commands below.'
+      response[:attachments] << { text: '/pingpong record <@winner> <@loser>' }
+      response[:attachments] << { text: '/pingpong odds <@player1> <@player2>' }
+      response[:attachments] << { text: '/pingpong matches <@player>' }
+      response[:attachments] << { text: '/pingpong leaderboard' }
+      response[:attachments] << { text: '/pinpong help' }
     end
 
     return response.to_json

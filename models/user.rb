@@ -21,7 +21,6 @@ class User < Sequel::Model(:users)
     k = 32
     expected = 1/(1+10**((opponent_elo-elo)/400))
     new_elo = elo + (k*((won ? 1 : 0) - expected))
-    winner.elo = elo + (k*((won ? 1: 0) - expected))
     self.elo = new_elo
   end
 

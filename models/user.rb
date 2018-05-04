@@ -17,10 +17,19 @@ class User < Sequel::Model(:users)
     defeated_opponents + undefeated_opponents
   end
 
+  def screen_name
+    name || slack_id
+  end
+
+  def expected_odds(opponent_elo: nil)
+    return 0 if opponent_elo.nil
+    return 1/(1+10**(opponent_elo-elo)/400)
+  end
+
   def update_elo(opponent_elo: 1500, won: false)
     k = 32
     # move to seperate function
-    expected = 1/(1+10**((opponent_elo-elo)/400))
+    expected = expected_odds(opponent_elo: opponent_elo)
     new_elo = elo + (k*((won ? 1 : 0) - expected))
     self.elo = new_elo
     self.save

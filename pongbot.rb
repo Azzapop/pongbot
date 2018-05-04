@@ -32,7 +32,8 @@ class Pongbot < Sinatra::Base
     end
 
     query = params['text'].split(' ')
-    if query[0] == 'record'
+    case query[0]
+    when 'record'
       winner = User.find_or_create_by_slack_id(slack_id: query[1])
       loser = User.find_or_create_by_slack_id(slack_id: query[2])
       unless winner.errors.any? || loser.errors.any?
@@ -63,6 +64,12 @@ class Pongbot < Sinatra::Base
       else
         response[:text] = (winner.errors + loser.errors).join(', ')
       end
+    when 'odds'
+      player1 = User.find_or_create_by_slack_id(slack_id: query[1])
+      player2 = User.find_or_create_by_slack_id(slack_id: query[2])
+      player1_odds = player1.expected_odds(opponent_elo: player2.elo)
+      player2_odds = player2.expected_odds(opponent_elo: player1.elo)
+      response[:text] = "#{player1.screen_name} (#{player1_odds}) -- #{player2.screen_name} (#{player2_odds})"
     end
 
     return response.to_json

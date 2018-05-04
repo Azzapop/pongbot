@@ -22,7 +22,7 @@ class User < Sequel::Model(:users)
   end
 
   def expected_odds(opponent_elo: nil)
-    return 0 if opponent_elo.nil
+    return 0 if opponent_elo.nil?
     return 1/(1+10**(opponent_elo-elo)/400)
   end
 

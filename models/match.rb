@@ -19,9 +19,9 @@ class Match < Sequel::Model(:matches)
       return match
     end
 
-    def slack_leaderboard
+    def slack_leaderboard(heading: '')
       board = [{
-        text: 'New Leaderboard',
+        text: heading,
         fields: [
           { title: 'Position', short: true },
           { title: 'Player (W/L)', short: true }

@@ -41,7 +41,7 @@ class Pongbot < Sinatra::Base
         unless match.errors.any?
           response[:text] = ':zap: :ping_pong:'
           response[:attachments] << { text: "#{winner.name} has beaten #{loser.name}", color: "#00BD58" }
-          response[:attachments] += Match.slack_leaderboard
+          response[:attachments] += Match.slack_leaderboard(heading: 'New Leaderboard')
         else
           response[:text] = match.errors.join(', ')
         end
@@ -55,7 +55,7 @@ class Pongbot < Sinatra::Base
       player2_odds = player2.expected_odds(opponent_elo: player1.elo)
       response[:text] = "#{player1.screen_name} (#{player1_odds}) -- #{player2.screen_name} (#{player2_odds})"
     when 'leaderboard'
-      response[:text] = ':ping_pong: Leaderboard :ping_pong'
+      response[:text] = ':ping_pong: Leaderboard :ping_pong:'
       response[:attachments] = Match.slack_leaderboard
     end
 

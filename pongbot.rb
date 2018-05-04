@@ -24,8 +24,6 @@ class Pongbot < Sinatra::Base
       attachments: []
     }
 
-    User.all.map { |u| u.delete }
-    logger.info User.count
     if params['token'] != ENV['SLACK_TOKEN']
       status 403
       return "Invalid Token"
@@ -52,7 +50,7 @@ class Pongbot < Sinatra::Base
           response[:attachments] += User.top_ten.each_with_index.map do |user, i|
             {
               fields: [
-                { title: '', value: i, short: true },
+                { title: '', value: i+1, short: true },
                 { title: '', value: "#{user.name || user.slack_id} (#{user.won_matches.count}/#{user.lost_matches.count})", short: true }
               ]
             }

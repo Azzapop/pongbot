@@ -23,7 +23,7 @@ class User < Sequel::Model(:users)
     expected = 1/(1+10**((opponent_elo-elo)/400))
     new_elo = elo + (k*((won ? 1 : 0) - expected))
     self.elo = new_elo
-    save
+    self.save
   end
 
   dataset_module do
